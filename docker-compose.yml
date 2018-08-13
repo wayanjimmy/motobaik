@@ -1,0 +1,29 @@
+version: "3"
+services:
+  db:
+    image: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: motobaik_development
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - "8080:8080"
+  web:
+    build: .
+    command: bundle exec rails s -p 5000 -b '0.0.0.0'
+    environment:
+      RAILS_ENV: development
+    volumes:
+      - .:/workspace
+    ports:
+      - "5000:5000"
+volumes:
+  dbdata:
+
+
